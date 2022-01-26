@@ -1,0 +1,99 @@
+
+export const initialState = {
+	cart : {
+	products : [],
+},
+}
+
+
+const configureStore = createStore(
+	mainReducer,
+	initialState,
+	window.__REDUX_DEVTOOLS_EXTENSION && window.__REDUX_DEVTOOLS_EXTENSION()
+)
+ export default configureStore
+
+//the reducer is a pure function , no side-effects and with the same input
+//will always produce the same output 
+
+const mainReducer = (state = initialState, action) =>{
+	switch (action.type){
+	default : 
+		return state
+}
+}
+
+export default mainReducer
+
+
+<Provider.StrictMode>
+<Provider store = {configureStore}
+	<App / >
+<Provider/>
+<Provider.StrictMode />
+
+@@INIT = initial of Redux engine 
+
+// for reading a value from redux store or interacting with it (dispatching an action) we need to connect the component with it 
+
+CartIndicator.jsx
+import {connect} from "react-redux"
+
+//connect creates a HOC from CartIndicator, a higher order component , with the same capabilities as before and more 
+//tipically a HOC has more props than before
+
+export default connect(mapStateToProps)(CartIndicator)
+//connect can take up to two arguments:
+//at least it should receive mapStateToProps
+//if we provide mapStateToProps , CartIndicator will be able to read from redux store
+//If you also want to DISPATCH ACTIONS from this component , in order to change the redux store, you will need also mapDispatchToProps
+//in CartIndicator we just need to read the cart lenghts
+//so we just need mapStateToProps
+//mapStateToProps = READ mapDispatchToProps = write
+
+const mapStateToProps = (state) => ({
+	//every property of the object we return from mapStateToProps is going to be a new prop for this component
+	//we want to read the lenght of the cart, more specifically cart.products
+	...state // return all the properties of the state
+	//cartLenght : state.cart.products.length = customised use
+	
+})
+
+//finished connecting CartIndicator
+
+//BookDetails.jsx
+//we need to write not only read 
+//import connect from react-redux
+//export default connect(mapStateToProps, mapDispatchToProps)(BookDetail)
+
+//reducer holds the logic for writting 
+//we need to be able to dispatch an action
+//for dispatching an action in the BookDetail component we need mapDispatchToProps
+//but in any case , to provide a second argument to connect we need to provide the first one, the order matters, mapStateToProps
+
+const mapStateToProps = state =>({}) // just for making room for the second argument
+
+const mapDispatchToProps = (dispatch) => ({
+	//writting ES 6 , latest javascript syntax
+	addToCart : (book) => {
+		dispatch({
+		type: "ADD_TO_CART",
+		payload: book
+		})
+	}
+})
+
+onclick= {() => {this.props.addToCart(this.state.book)}}
+
+//create logic in reducer 
+
+switch(action.type){
+	case"ADD_TO_CART": 
+	return {
+		//action.payload is the book
+				
+	}
+	
+default:
+return state
+}

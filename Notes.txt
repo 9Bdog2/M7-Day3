@@ -76,6 +76,7 @@ const mapStateToProps = state =>({}) // just for making room for the second argu
 const mapDispatchToProps = (dispatch) => ({
 	//writting ES 6 , latest javascript syntax
 	addToCart : (book) => {
+// book is the book object , with all the parameters
 		dispatch({
 		type: "ADD_TO_CART",
 		payload: book
@@ -91,9 +92,128 @@ switch(action.type){
 	case"ADD_TO_CART": 
 	return {
 		//action.payload is the book
-				
+		//state.cart.products.push(book)//not the right way 
+		...state, 
+		cart: {
+			...state.cart,
+			// ..state.cart is carrying over every other property you might have into the cart sub-object apart from products
+			products: state.cart.products.concat(action.payload), // this is allowed because it does not mutate the new array
+			//products: [...state.cart.products, action.payload], this is allowed 
+			
+		}				
 	}
 	
 default:
 return state
 }
+
+//Cart.jsx
+
+const mapDispatchToProps = (dispatch) => ({
+	removeFromCart : (index) => {
+	dispatch({
+	type: "REMOVE_FROM_CART",
+	payload: index
+})
+}
+})
+
+//add new logic to reducer
+
+case "REMOVE_FROM_CART":
+	return{
+	...state,
+	cart : {
+		...state.cart,
+		products: state.cart.products.filter((book, i) => i !== action.payload),
+	//products: [...state.cart.products.slice(0, action.payload), ...state.cart.products.slice(action.payload + 1)] //different method
+	//obv methods that mutate the original array (like.splice()) must not be used
+	
+}
+}
+
+//creating the actions 
+//refining the code 
+//create in the redux folder/actions/index.js
+//let's create action creators: these are functions ment to return the actions objects
+
+export const addToCartAction =(book) => ({
+	type:"ADD_TO_CART"
+	payload: book	
+})
+//BookDetails
+dispatch(addToCArtAction(book))
+
+export const removeFromCartAction = (index) => ({
+	type: "REMOVE_FROM_CART",
+	payload: index,
+})
+//BookDetails
+dispatch(removeFromCartAction(index))
+// Actions/index.js
+export const ADD_TO_CART = "ADD_TO_CART"
+export const REMOVE_FROM_CART = "REMOVE_FROM_CART"
+
+//Adding a simple log-in 
+//ADding Form.Control
+
+const [name, setName]= useState("")
+
+value = {name}
+onChange={e => setName(e.target.value)}
+onKeyDown = {e => {if (e.key ==="Enter") setUsername(name)}}
+
+//here now i want to send my username to the redux store
+
+//Store/index.js
+
+user : {
+	username: "",
+}
+
+//CartIndicator
+mapDispatchToProps
+
+const mapDispatchToProps = (dispatch) => ({
+	setUsername : (name) => {dispatch(setUsernameAction(name))}
+}) 
+
+//CartIndicator = ({setUsername})
+//ACtion creator
+
+export const setUsernameAction = (name)=>({
+	type : SET_USERNAME,
+	payload: name, 
+})
+
+//Reducer
+
+case SET_USERNAME:
+return {
+	...state,
+	user: {
+		...state.user,
+		username: action.payload,
+}
+}
+
+//CartIndicator
+
+//for understading if i need to show a button or input field i need to know that the user is already logged in so i just have to check the user.username property from redux store 
+//mapStateToProps
+
+username : state.user.username
+
+cartIndicator = ({username})
+
+//add logic to show if logged in 
+
+username ? (...) : (...)
+
+//BookDetail
+
+mapStateToProps = (state) => ({
+		
+})
+
+username ? (...) : (...)

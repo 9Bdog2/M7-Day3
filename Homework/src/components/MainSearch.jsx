@@ -1,8 +1,8 @@
 import { Component } from "react";
-import { Container, Row, Col, Form } from "react-bootstrap";
+import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import Job from "./Job";
 import uniqid from "uniqid";
-
+import { connect } from "react-redux";
 class MainSearch extends Component {
   state = {
     query: "",
@@ -32,6 +32,10 @@ class MainSearch extends Component {
     this.setState({ jobs: data });
   };
 
+  handleConsoleLogFav = () => {
+    console.log(this.props.jobsSearches.jobs);
+  };
+
   render() {
     return (
       <Container>
@@ -48,6 +52,9 @@ class MainSearch extends Component {
                 placeholder="type and press Enter"
               />
             </Form>
+            <Button className="mt-3" onClick={this.handleConsoleLogFav}>
+              Favourites
+            </Button>
           </Col>
           <Col xs={10} className="mx-auto mb-5">
             {this.state.jobs.map((jobData) => (
@@ -60,4 +67,4 @@ class MainSearch extends Component {
   }
 }
 
-export default MainSearch;
+export default connect((s) => s)(MainSearch);
